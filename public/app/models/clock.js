@@ -83,26 +83,30 @@ define([
 
 				}
 			},
-			getControl: function(){
+			setControl: function(){
 				var dateObject = new Date();
 				var dstring = (dateObject.getMonth() + 1) + "-" + dateObject.getDay() + "-" + dateObject.getFullYear();
 				var lastDate = 0;
 				var seconds = 0;
+				var interval = 0;
 				console.log("dstring:" + dstring);
-				var control = { start: dstring, interval: 0, seconds:0};
-				if ( this.timers && this.times.length > 1 ){
+
+				//var control = { start: dstring, interval: 0, seconds:0};
+				if ( !this.control ){
+					this.control = { start: dstring, interval: 0, seconds:0};
+				}
+				if ( this.timers && this.timers.length > 1 ){
 					for(var i=0; i < this.timers.length; i++){
 						lastDate = this.timers[i].start;
-						seconds = this.timers[i].seconds;
+						seconds = this.timers[i].timer;
 					}
 
 					if ( lastDate == dstring){
-						control.start = lastDate;
-						control.seconds = seconds;
+						this.control.start = lastDate;
+						this.control.seconds = seconds;
 					}
 				}
 				
-				return control;
 				
 			},
 			start : function(){
@@ -110,11 +114,11 @@ define([
 				//self.control = { interval: 0, seconds: 0};
 
 				//var control = this.getControl();
-				var retval = self.getControl();
-				self.control = { start: retval.start, interval: 0, seconds: retval.seconds};
+				//var retval = self.getControl();
+				self.setControl(); //{ start: retval.start, interval: retval.interval, seconds: retval.seconds};
 				//var controlId = $('#control_' + self.get("id"));
 				var intval = setInterval(function(){
-					self.control.seconds = (self.control.seconds) ? self.control.seconds++ : 1;
+					self.control.seconds = (self.control.seconds) ? (self.control.seconds + 1) : 1;
 					self.showTime();
 					
 				},1000);
@@ -122,7 +126,10 @@ define([
 
 			},
 			pause: function(){
-				console.log("pause called on:" + this.get("id"))
+				if ( !this.control ){
+					this.setControl();
+				}
+				
 				if ( this.control && this.control.interval ){
 					clearInterval(this.control.interval);
 					if ( !this.timers ){

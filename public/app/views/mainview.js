@@ -30,6 +30,9 @@ define([
 			
 			this.listenTo(this.clocks, 'add', this.render);
 			this.clocks.fetch();
+			this.clocks.each(function(clock){
+				clock.set('checked',false);
+			});
 			dispatcher.on('insert', this.addClock, this);
 			
 			
@@ -41,47 +44,7 @@ define([
 			'click #showAdd': "toggleAddForm",
 			//'click #addService': "addService"
 		},
-		// createServiceViews: function(){
-		// 	this.list.empty();
-		// 	this.total = $('#total span');
-		// 	var showNext = false;
-
-		// 	var grouped = this.clocks.groupBy("owner");
-
-		// 	//console.log("grouped:", grouped);
-		// 	for(var i in grouped){
-		// 		var details = $("<details></details>");
-		// 		var summary = $("<summary>" + i + "</summary>");
-		// 		details.append(summary);
-
-		// 		var ul = $("<ul id='" + i + "'></ul>");
-		// 		var views = grouped[i];
-
-		// 		for(var x=0; x < views.length; x++){
-		// 			var clock = views[x];
-		// 			var view = new ClockView({model: clock});
-		// 			ul.append(view.render().el);
-				
-		// 		}
-		// 		details.append(ul);
-		// 		this.list.append(details);
-		// 		// $("#" + i + " div>li").on('click',function(){
-		// 		// 	console.log("clicked company list:", $(this).attr('id'));
-		// 		// 	Sapp.router.navigate('protocol/' + $(this).attr('id'), true);
-		// 		// })
-
-		// 	}
-			
-		// },
-
-		// render: function(){
-		// 	this.template = _.template(mainviewTemplate);
-		// 	this.$el.html(this.template());
-		// 	this.list = $('#clocks');
-		// 	this.createServiceViews();          
-		// 	return this;
-
-		// },
+		 
 		render: function(){
 			this.list.empty();
 			this.clocks.each(function(clock){
