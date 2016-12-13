@@ -49,8 +49,8 @@ var Clock = new  mongoose.Schema({
     protocol:String,
     checked: Boolean,
     owner: String,
-    timers: [{start: Date, timer: Number}],
-    control: {interval: Number, seconds: Number}
+    timers: [{start: String, timer: Number}],
+    control: {start: String, interval: Number, seconds: Number}
 });
  
 //Models

@@ -10,7 +10,7 @@ define([
 				checked: false,
 				owner: '',
 				timers: [],
-				control: {interval:0,seconds:0}
+				control: {start:0,interval:0,seconds:0}
 			},
 			idAttribute: "_id",
 			parse:function (response) {
@@ -20,12 +20,8 @@ define([
 		        return response;
 		    },
 
-		    initialize: function(){
-		    	this.control = {
-		    		interval: 0,
-		    		seconds: 0
-		    	};
-
+		    intialize: function(){
+		    	this.control = { start: 0, interval: 0, seconds: 0};
 		    	this.timers = [];
 		    },
 		    
@@ -46,7 +42,16 @@ define([
 				//controlId.html(" Timer:" + self.control.seconds);
 				var h = 0,m =0,s = 0;
 
-				s = this.control.seconds;
+				if ( this.control && this.control.seconds){
+					s = this.control.seconds;
+				}else{
+					//find last control
+					var s = 0;
+
+					for(var i=0; this.timers && i < this.timers.length; i++){
+						s = this.timers[i].seconds;
+					}
+				}
 				if ( s > 60){
 					m = parseInt(s/60);
 					s = s%60;
@@ -65,55 +70,85 @@ define([
 				if ( s < 10){
 					s = "0" + s;
 				}
+				
 				controlId.html(h + ":" + m + ":" + s);
 
 			},
 			controlClock: function(){
 				if ( this.get('checked') ){
 					this.start();
-					var activeClock = this.get("id");
-					Sapp.collection.each(function(clock){
-						var id = clock.get("id");
-						if ( id !== activeClock ){
-							if ( clock.get('checked') ){
-								clock.set('checked', false);
-								clock.pause();
-							}
-							
-						}
-					});
+					this.trigger('change:timers', this,{});
 				}else{
 					this.pause();
+
 				}
+			},
+			getControl: function(){
+				var dateObject = new Date();
+				var dstring = (dateObject.getMonth() + 1) + "-" + dateObject.getDay() + "-" + dateObject.getFullYear();
+				var lastDate = 0;
+				var seconds = 0;
+				console.log("dstring:" + dstring);
+				var control = { start: dstring, interval: 0, seconds:0};
+				if ( this.timers && this.times.length > 1 ){
+					for(var i=0; i < this.timers.length; i++){
+						lastDate = this.timers[i].start;
+						seconds = this.timers[i].seconds;
+					}
+
+					if ( lastDate == dstring){
+						control.start = lastDate;
+						control.seconds = seconds;
+					}
+				}
+				
+				return control;
+				
 			},
 			start : function(){
 				var self = this;
-				self.control = { interval: 0, seconds: 0};
+				//self.control = { interval: 0, seconds: 0};
 
+				//var control = this.getControl();
+				var retval = self.getControl();
+				self.control = { start: retval.start, interval: 0, seconds: retval.seconds};
 				//var controlId = $('#control_' + self.get("id"));
 				var intval = setInterval(function(){
-					self.control.seconds += 1;
-					// if ( self.seconds == 60){
-					// 	self.time += 1;
-					// 	self.seconds = 0;
-					// }
-					//self.updateTime();
+					self.control.seconds = (self.control.seconds) ? self.control.seconds++ : 1;
 					self.showTime();
-					// console.log("adding:" + self.control.seconds + " to span")
-					// controlId.html(" Timer:" + self.control.seconds);
+					
 				},1000);
 				self.control.interval = intval;
+
 			},
 			pause: function(){
-				clearInterval(this.control.interval);
-				if ( !this.timers ){
-					this.timers = [];
+				console.log("pause called on:" + this.get("id"))
+				if ( this.control && this.control.interval ){
+					clearInterval(this.control.interval);
+					if ( !this.timers ){
+						console.log("setting timers to empty")
+						this.timers = [];
+					}
+					if ( this.control && this.control.start && this.control.seconds ){
+						this.timers.push({start: this.control.start, timer: this.control.seconds});
+					}
+					
+					
+					this.set('checked',false);
+					this.save({
+						success: function(obj,response){
+							console.log("saved successfully")
+						},
+						error: function(obj,err){
+							console.log("error saving")
+						}
+					});
 				}
-				this.timers.push({start: new Date(), timer: this.control.seconds});
+				
 				this.showTime();
-				this.set('checked',false);
-				//this.control.interval = 0;
-				//this.control.seconds = 0;
+				
+				
+
 			},
 			
 			toggle: function(){				
