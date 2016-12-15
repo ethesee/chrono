@@ -37,11 +37,12 @@ define([
 		render: function(){
 
 			// Create the HTML
-
-			this.$el.html('<input type="checkbox" value="1" name="' + this.model.get('company') + '" /><span style="width:40px;">' + this.model.get('protocol') + '</span><span id="control_' + this.model.get("id") + '">' + (this.model.get('control')).seconds + '</span>');
+			this.$el.html('<input type="checkbox" value="1" name="' + this.model.get('company') + '" /><span style="width:40px;">' + this.model.get('company') + ":" + this.model.get('protocol') + '</span><span id="control_' + this.model.get("id") + '">' + (this.model.get('control')).seconds + '</span>');
 			this.$('input').prop('checked', this.model.get('checked'));
-
-
+			//if ( this.model.get("control") && this.model.get("control").running){
+			this.model.showTime();
+			//}
+			
 			// Returning the object is a good practice
 			// that makes chaining possible
 			return this;

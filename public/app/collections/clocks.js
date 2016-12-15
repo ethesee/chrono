@@ -16,7 +16,7 @@ define([
 		// },
 		// parse: function(data) {
 		// 	console.log("parse called")
-		//     return data.services;
+		//     return data.clocks;
 		// },
 
 		// Return an array only with the checked services
@@ -25,24 +25,24 @@ define([
 		},
 		initialize: function(){
 			//this.on("change:timers",this.changeTimers,this);
-			this.listenTo(this,"change:timers",this.changeTimers);
+			//this.listenTo(this,"change:timers",this.changeTimers);
 
 		},
-		changeTimers: function(model,val,options){
-			console.log("model:" + model.get("id") + " just changed");
-			var activeClock = model.get("id");
-			this.each(function(clock){
-				var id = clock.get("id");
-				if ( id !== activeClock ){
-					if ( clock.get('checked') ){
-						//clock.set('checked', false);
-						console.log("pausing clock:" + id);
-						clock.pause();
-					}
+		// changeTimers: function(model,val,options){
+		// 	console.log("model:" + model.get("id") + " just changed");
+		// 	var activeClock = model.get("id");
+		// 	this.each(function(clock){
+		// 		var id = clock.get("id");
+		// 		if ( id !== activeClock ){
+		// 			if ( clock.get('checked') ){
+		// 				//clock.set('checked', false);
+		// 				console.log("pausing clock:" + id);
+		// 				clock.pause();
+		// 			}
 					
-				}
-			});
-		}
+		// 		}
+		// 	});
+		// }
 
 	});
 	return Clocks;

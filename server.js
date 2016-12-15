@@ -50,7 +50,7 @@ var Clock = new  mongoose.Schema({
     checked: Boolean,
     owner: String,
     timers: [{start: String, timer: Number}],
-    control: {start: String, interval: Number, seconds: Number}
+    control: {start: String, interval: Number, seconds: Number, running: Boolean}
 });
  
 //Models

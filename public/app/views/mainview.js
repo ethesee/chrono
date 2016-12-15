@@ -33,6 +33,7 @@ define([
 			this.clocks.each(function(clock){
 				clock.set('checked',false);
 			});
+			Sapp.clocks = this.clocks;
 			dispatcher.on('insert', this.addClock, this);
 			
 			
@@ -63,12 +64,20 @@ define([
 
 			//this.createServiceViews();
 			//this.protocols.trigger('change',{});
+			var dateObject = new Date();
+			var dstring = (dateObject.getMonth() + 1) + "-" + dateObject.getDay() + "-" + dateObject.getFullYear();
+			var _timers = [];
 
-			this.clocks.create({ company: company, protocol: protocol, owner: owner});
+			var atimer = {start: dstring,timer: 0};
 
-			Utils.activeLink('Home');
+			_timers.push(atimer);
+			
+			var controlla = { start: dstring, interval: 0, seconds:0, running: false};
+			this.clocks.create({ company: company, protocol: protocol, owner: owner, timers: _timers, control: controlla});
+
+			//Utils.activeLink('Home');
 			//this.router.navigate();
-			Sapp.router.navigate('Home', true);	
+			Sapp.router.navigate('', true);	
 			
 			
 		},
