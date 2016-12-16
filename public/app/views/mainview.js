@@ -64,8 +64,9 @@ define([
 
 			//this.createServiceViews();
 			//this.protocols.trigger('change',{});
-			var dateObject = new Date();
-			var dstring = (dateObject.getMonth() + 1) + "-" + dateObject.getDay() + "-" + dateObject.getFullYear();
+			// var dateObject = new Date();
+			// var dstring = (dateObject.getMonth() + 1) + "-" + dateObject.getDay() + "-" + dateObject.getFullYear();
+			var dstring = moment().format("MM-DD-YYYY");
 			var _timers = [];
 
 			var atimer = {start: dstring,timer: 0};

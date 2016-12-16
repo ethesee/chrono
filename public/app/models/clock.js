@@ -1,8 +1,9 @@
 define([
   'underscore',
   'backbone',
-  'sapp'
-], function(_, Backbone,Sapp) {
+  'sapp',
+  'moment'
+], function(_, Backbone,Sapp,moment) {
 	var Clock = Backbone.Model.extend({
 			defaults:{
 				company: 'My company',
@@ -102,8 +103,10 @@ define([
 			},
 
 			setControl: function(){
-				var dateObject = new Date();
-				var dstring = (dateObject.getMonth() + 1) + "-" + dateObject.getDay() + "-" + dateObject.getFullYear();
+				// var dateObject = new Date();
+				// var dstring = (dateObject.getMonth() + 1) + "-" + dateObject.getDay() + "-" + dateObject.getFullYear();
+				var dstring = moment().format("MM-DD-YYYY");
+				console.log("dstring:" + dstring);
 				var lastDate = 0;
 				var seconds = 0;
 				var interval = 0;
@@ -114,14 +117,16 @@ define([
 					this.control = { start: dstring, interval: 0, seconds:0, running : false};
 				}
 				var _timers = this.get('timers');
+
 				if ( _timers && _timers.length > 1 ){
 					console.log("getting last element of timers")
 					for(var i=0; i < _timers.length; i++){
 						lastDate = _timers[i].start;
 						seconds = _timers[i].timer;
 					}
-
+					console.log("lastDate:" + lastDate	+ " dstring:" + dstring)
 					if ( lastDate == dstring){
+						console.log("they are equal")
 						this.control.start = lastDate;
 						this.control.seconds = seconds;
 					}
@@ -179,6 +184,7 @@ define([
 						//this.timers.push({start: this.control.start, timer: this.control.seconds});
 						//this.control.running = false;
 						var _timers = this.get("timers");
+						console.log("saving with start:" + this.control.start);
 						_timers.push({start: this.control.start, timer: this.control.seconds});
 						this.set('timers', _timers);
 						this.save({});
