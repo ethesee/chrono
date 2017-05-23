@@ -48,6 +48,8 @@ define([
 		 
 		render: function(){
 			this.list.empty();
+			$("#projectlist").toggle();
+			$("#addForm").hide();
 			this.clocks.each(function(clock){
 				var view = new ClockView({model:clock});
 				this.list.append(view.render().el);

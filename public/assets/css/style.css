@@ -47,7 +47,7 @@ section, footer, header, aside{
 	background-color:#fff;
 	box-shadow:0 0 1px #ccc;
 	/*width:700px;*/
-	width: 98%;
+	width: 100%;
 	/*margin:0px auto;*/
 	border-radius:6px;
 	/*font:bold 24px/1 'PT Sans', sans-serif;*/
@@ -56,6 +56,14 @@ section, footer, header, aside{
 
 
 #main h1{
+	/*font-size:36px;*/
+	text-align: center;
+	text-transform: uppercase;
+	padding: 0 0 80px;
+
+}
+
+#main h2{
 	/*font-size:36px;*/
 	text-align: center;
 	text-transform: uppercase;
@@ -272,8 +280,8 @@ details details summary {
 #addForm{
 	padding:100px;
 	background-color:#fff;
-	box-shadow:0 0 1px #ccc;
-	width: 98%;
+	/*box-shadow:0 0 1px #ccc;*/
+	width: 100%;
 	/*margin:100px auto;*/
 	border-radius:6px;
 	/*font:bold 24px/1 'PT Sans', sans-serif;*/

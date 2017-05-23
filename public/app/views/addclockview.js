@@ -21,7 +21,8 @@ define([
 		},
 
 		render: function(){
-
+			$("#projectlist").toggle();
+			$("#addForm").show();
 			var tmpl = _.template(this.template); //tmpl is a function that takes a JSON object and returns html
         	this.$el.html(tmpl(/*this.model.toJSON()*/));
         	
